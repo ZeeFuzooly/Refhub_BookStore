@@ -1,4 +1,4 @@
-import { Badge, Button, Card,  Text, Image, Box } from '@mantine/core';
+import { Badge, Button, Card, Text, Image, Box } from "@mantine/core";
 
 interface Book {
   title: string;
@@ -15,19 +15,47 @@ interface BookCardProps {
 
 const BookCard: React.FC<BookCardProps> = ({ book, onAddToCart }) => {
   return (
-    <Card shadow="sm" padding="lg" radius="md" withBorder style={{ height: '350px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-      <Card.Section style={{ position: 'relative' }}>
-        <Image
-          src={book.cover}
-          height={160}
-          alt={book.title}
-        />
-        <Badge color="pink" style={{ position: 'absolute', top: 10, right: 10 }}>On Sale</Badge>
+    <Card
+      shadow="sm"
+      padding="lg"
+      radius="md"
+      withBorder
+      style={{
+        height: "350px",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+      }}
+    >
+      <Card.Section style={{ position: "relative" }}>
+        <Image src={book.cover} height={160} alt={book.title} />
+        <Badge
+          color="pink"
+          style={{ position: "absolute", top: 10, right: 10 }}
+        >
+          On Sale
+        </Badge>
       </Card.Section>
 
-      <Box style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <Box
+        style={{
+          flex: 1,
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
+        }}
+      >
         <Box>
-          <Text fw={500} style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{book.title}</Text>
+          <Text
+            fw={500}
+            style={{
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+            }}
+          >
+            {book.title}
+          </Text>
           <Text size="sm" c="dimmed">
             {book.author}
           </Text>
@@ -36,7 +64,7 @@ const BookCard: React.FC<BookCardProps> = ({ book, onAddToCart }) => {
           </Text>
         </Box>
         <Button
-          variant='light'
+          variant="light"
           color="blue"
           fullWidth
           mt="md"

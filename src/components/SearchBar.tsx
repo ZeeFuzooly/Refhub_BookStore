@@ -1,5 +1,5 @@
-import { Select, TextInput, Group, Stack } from '@mantine/core';
-import { useState } from 'react';
+import { Select, TextInput, Group, Stack } from "@mantine/core";
+import { useState } from "react";
 
 interface SearchBarProps {
   searchTerm: string;
@@ -10,9 +10,16 @@ interface SearchBarProps {
   setSortBy: (sortBy: string) => void;
 }
 
-const SearchBar: React.FC<SearchBarProps> = ({ searchTerm, setSearchTerm, sortBy, setSortBy ,categoryFilter, setCategoryFilter}) => {
+const SearchBar: React.FC<SearchBarProps> = ({
+  searchTerm,
+  setSearchTerm,
+  sortBy,
+  setSortBy,
+  categoryFilter,
+  setCategoryFilter,
+}) => {
   return (
-    <Stack >
+    <Stack>
       <TextInput
         placeholder="Search"
         value={searchTerm}
@@ -24,25 +31,25 @@ const SearchBar: React.FC<SearchBarProps> = ({ searchTerm, setSearchTerm, sortBy
           label="Sort by"
           placeholder="Select sorting criteria"
           value={sortBy}
-          onChange={(value) => setSortBy(value || 'title')}
-          style={{ width: 590}}
+          onChange={(value) => setSortBy(value || "title")}
+          style={{ width: 590 }}
           data={[
-            { value: 'title', label: 'Title' },
-            { value: 'author', label: 'Author' },
-            { value: 'price', label: 'Price' }
+            { value: "title", label: "Title" },
+            { value: "author", label: "Author" },
+            { value: "price", label: "Price" },
           ]}
         />
-         <Select
+        <Select
           label="Category"
           placeholder="Select category"
-          value={categoryFilter || ''}
+          value={categoryFilter || ""}
           onChange={(value) => setCategoryFilter(value || null)}
           style={{ width: 600 }}
           data={[
-            { value: '', label: 'All' },
-            { value: 'Fiction', label: 'Fiction' },
-            { value: 'Non-Fiction', label: 'Non-Fiction' },
-            { value: 'Academic', label: 'Academic' },
+            { value: "", label: "All" },
+            { value: "Fiction", label: "Fiction" },
+            { value: "Non-Fiction", label: "Non-Fiction" },
+            { value: "Academic", label: "Academic" },
           ]}
         />
       </Group>

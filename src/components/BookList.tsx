@@ -1,7 +1,16 @@
 import { useBookStore } from "../stores/bookstore";
 import { useCartStore } from "../stores/cartstore";
 import { useRouter } from "next/router";
-import { Container, Grid, Center, Button, Text, Pagination, Group, Paper } from "@mantine/core";
+import {
+  Container,
+  Grid,
+  Center,
+  Button,
+  Text,
+  Pagination,
+  Group,
+  Paper,
+} from "@mantine/core";
 import SearchBar from "./SearchBar";
 import Filters from "./Filter";
 import BookCard from "./BookCard";
@@ -20,8 +29,10 @@ interface BookListProps {
 }
 
 const BookList: React.FC<BookListProps> = ({ search }) => {
-  const books = useBookStore((state: { books: any; }) => state.books);
-  const addToCart = useCartStore((state: { addToCart: any; }) => state.addToCart);
+  const books = useBookStore((state: { books: any }) => state.books);
+  const addToCart = useCartStore(
+    (state: { addToCart: any }) => state.addToCart
+  );
   const router = useRouter();
 
   const [sortBy, setSortBy] = useState<string>("title");
@@ -31,29 +42,44 @@ const BookList: React.FC<BookListProps> = ({ search }) => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const itemsPerPage = 8;
 
-  const filteredBooks = books.filter((book: { title: string; author: string; category: string; price: number; }) => {
-    const matchesSearch = searchTerm.trim()
-      ? book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        book.author.toLowerCase().includes(searchTerm.toLowerCase())
-      : true;
-    const matchesCategory = categoryFilter
-      ? book.category === categoryFilter
-      : true;
-    const matchesPrice =
-      book.price >= priceRange[0] && book.price <= priceRange[1];
-    return matchesSearch && matchesCategory && matchesPrice;
-  });
+  const filteredBooks = books.filter(
+    (book: {
+      title: string;
+      author: string;
+      category: string;
+      price: number;
+    }) => {
+      const matchesSearch = searchTerm.trim()
+        ? book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          book.author.toLowerCase().includes(searchTerm.toLowerCase())
+        : true;
+      const matchesCategory = categoryFilter
+        ? book.category === categoryFilter
+        : true;
+      const matchesPrice =
+        book.price >= priceRange[0] && book.price <= priceRange[1];
+      return matchesSearch && matchesCategory && matchesPrice;
+    }
+  );
 
-  const sortedBooks = filteredBooks.sort((a: { title: string; author: string; price: number; }, b: { title: any; author: any; price: number; }) => {
-    if (sortBy === "title") return a.title.localeCompare(b.title);
-    if (sortBy === "author") return a.author.localeCompare(b.author);
-    if (sortBy === "price") return a.price - b.price;
-    return 0;
-  });
+  const sortedBooks = filteredBooks.sort(
+    (
+      a: { title: string; author: string; price: number },
+      b: { title: any; author: any; price: number }
+    ) => {
+      if (sortBy === "title") return a.title.localeCompare(b.title);
+      if (sortBy === "author") return a.author.localeCompare(b.author);
+      if (sortBy === "price") return a.price - b.price;
+      return 0;
+    }
+  );
 
   // Calculate the books to display for the current page
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const paginatedBooks = sortedBooks.slice(startIndex, startIndex + itemsPerPage);
+  const paginatedBooks = sortedBooks.slice(
+    startIndex,
+    startIndex + itemsPerPage
+  );
 
   const handleAddToCart = (book: Book) => {
     addToCart(book);
@@ -67,7 +93,7 @@ const BookList: React.FC<BookListProps> = ({ search }) => {
 
   return (
     <Container fluid px="xs">
-      <Paper  shadow="xs" style={{ marginBottom: '1rem' }}>
+      <Paper shadow="xs" style={{ marginBottom: "1rem" }}>
         <Grid>
           <Grid.Col span={12}>
             <SearchBar
@@ -102,13 +128,12 @@ const BookList: React.FC<BookListProps> = ({ search }) => {
             ))}
           </Grid>
           <Center mt="xl">
-            <Group >
+            <Group>
               <Pagination
                 value={currentPage}
                 onChange={setCurrentPage}
                 total={totalPages}
                 withControls
-              
               />
             </Group>
           </Center>

@@ -10,7 +10,13 @@ import {
   Box,
   Group,
 } from "@mantine/core";
-import { FaShoppingCart, FaFacebook, FaTwitter, FaInstagram, FaLinkedin } from "react-icons/fa";
+import {
+  FaShoppingCart,
+  FaFacebook,
+  FaTwitter,
+  FaInstagram,
+  FaLinkedin,
+} from "react-icons/fa";
 import { useRouter } from "next/router";
 
 export const metadata = {
@@ -37,7 +43,14 @@ export default function RootLayout({
       </head>
       <body>
         <MantineProvider>
-          <Container fluid style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
+          <Container
+            fluid
+            style={{
+              minHeight: "100vh",
+              display: "flex",
+              flexDirection: "column",
+            }}
+          >
             <Box style={{ flex: "1 0 auto" }}>
               <Flex
                 align="center"
@@ -53,8 +66,12 @@ export default function RootLayout({
               >
                 <Text size="xl">RefHub Book Store</Text>
                 <Flex align="center">
-                  <Anchor href="/" mr="md">Home</Anchor>
-                  <Anchor href="/about" mr="md">About</Anchor>
+                  <Anchor href="/" mr="md">
+                    Home
+                  </Anchor>
+                  <Anchor href="/about" mr="md">
+                    About
+                  </Anchor>
                   <Anchor href="/contact">Contact</Anchor>
                   <Button
                     variant="outline"
@@ -67,11 +84,20 @@ export default function RootLayout({
               </Flex>
               {children}
             </Box>
-            <Box component="footer" style={{ flexShrink: 0, padding: "1rem 0", borderTop: "1px solid #eaeaea" }}>
+            <Box
+              component="footer"
+              style={{
+                flexShrink: 0,
+                padding: "1rem 0",
+                borderTop: "1px solid #eaeaea",
+              }}
+            >
               <Container>
                 <Flex direction="column" align="center">
-                  <Text>&copy; 2024 RefHub Book Store - All Rights Reserved.</Text>
-                  <Group style={{ marginTop: '1rem' }}>
+                  <Text>
+                    &copy; 2024 RefHub Book Store - All Rights Reserved.
+                  </Text>
+                  <Group style={{ marginTop: "1rem" }}>
                     <Anchor href="https://facebook.com" target="_blank">
                       <FaFacebook size={24} />
                     </Anchor>

@@ -1,14 +1,14 @@
-import { Select, RangeSlider, Box, Stack, Text } from '@mantine/core';
+import { Select, RangeSlider, Box, Stack, Text } from "@mantine/core";
 
 interface FiltersProps {
   priceRange: [number, number];
   setPriceRange: (range: [number, number]) => void;
 }
 
-const Filters: React.FC<FiltersProps> = ({  priceRange, setPriceRange }) => {
+const Filters: React.FC<FiltersProps> = ({ priceRange, setPriceRange }) => {
   return (
     <Box mb="lg">
-      <Text  mb="xs">Filter by Price</Text>
+      <Text mb="xs">Filter by Price</Text>
       <RangeSlider
         label="Price Range"
         min={0}
@@ -17,9 +17,9 @@ const Filters: React.FC<FiltersProps> = ({  priceRange, setPriceRange }) => {
         value={priceRange}
         onChange={setPriceRange}
         marks={[
-          { value: 0, label: '$0' },
-          { value: 50, label: '$50' },
-          { value: 100, label: '$100' }
+          { value: 0, label: "$0" },
+          { value: 50, label: "$50" },
+          { value: 100, label: "$100" },
         ]}
         mb="md"
       />

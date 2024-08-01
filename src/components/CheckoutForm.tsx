@@ -1,8 +1,7 @@
 import { Box, Grid, Title } from '@mantine/core';
-import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
 import OrderSummary from './OrderSummary';
 import DeliveryAddressForm from './DeliveryAddressForm';
+import { useRouter } from 'next/router';
 
 interface CheckoutFormProps {
   totalPrice: number;
@@ -11,29 +10,18 @@ interface CheckoutFormProps {
     author: string;
     unitPrice: number;
     totalPrice: number;
+    quantity: number;
   }[];
 }
 
-const CheckoutForm: React.FC<CheckoutFormProps> = () => {
-  const [orderDetails, setOrderDetails] = useState<CheckoutFormProps['orderDetails']>([]);
-  const [totalPrice, setTotalPrice] = useState<number>(0);
-
-  const router = useRouter();
-
-  useEffect(() => {
-    if (router.query.orderDetails) {
-      setOrderDetails(JSON.parse(router.query.orderDetails as string));
-    }
-    if (router.query.totalPrice) {
-      setTotalPrice(parseFloat(router.query.totalPrice as string));
-    }
-  }, [router.query]);
-
+const CheckoutForm: React.FC<CheckoutFormProps> = ({ totalPrice, orderDetails }) => {
   const handleSubmit = async (values: { paymentMethod: string }) => {
     console.log('Payment method:', values.paymentMethod);
     console.log('Form values:', values);
     // Handle order confirmation or other payment methods
   };
+  const router = useRouter();
+  
 
   const handleBack = () => {
     router.push('/cart');
