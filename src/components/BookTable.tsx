@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import Image from 'next/image';
 import {
   useReactTable,
   ColumnDef,
@@ -16,13 +15,7 @@ const columns: ColumnDef<Book, any>[] = [
     header: 'Cover',
     accessorKey: 'cover',
     cell: info => (
-      <Image 
-        src={info.getValue<string>()} 
-        alt="Book Cover" 
-        width={80} 
-        height={120} 
-        style={{ objectFit: 'cover' }} 
-      />
+      <img src={info.getValue<string>()} alt="Book Cover" style={{ width: 80, height: 120 }} />
     ),
   },
   {
