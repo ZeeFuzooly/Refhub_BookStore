@@ -33,7 +33,21 @@ const Cart = () => {
   };
 
   const handleCheckout = () => {
-    router.push('/checkout');
+    const orderDetails = items.map(item => ({
+      bookTitle: item.book.title,
+      author: item.book.author,
+      unitPrice: item.book.price,
+      totalPrice: item.book.price * item.quantity
+    }));
+    const totalPrice = items.reduce((total, item) => total + item.book.price * item.quantity, 0);
+
+    router.push({
+      pathname: '/checkout',
+      query: {
+        totalPrice: totalPrice.toFixed(2),
+        orderDetails: JSON.stringify(orderDetails)
+      }
+    });
   };
 
   const handleBack = () => {
