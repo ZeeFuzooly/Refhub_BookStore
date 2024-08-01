@@ -1,4 +1,4 @@
-# RedHub Book Store Project
+# RefHub Book Store Project
 
 ## Overview
 
