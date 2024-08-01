@@ -3,6 +3,7 @@ import { Box, Title, Text, Table, Paper, Center, Button } from "@mantine/core";
 import { useCartStore } from "../stores/cartstore";
 import { useRouter } from "next/router";
 import { OrderSuccessProps, OrderDetail } from "../types/types";
+import { generatePDF } from "../schemas/generatePdf"
 
 const OrderSuccess: React.FC<OrderSuccessProps> = ({
   discount = 0,
@@ -38,6 +39,10 @@ const OrderSuccess: React.FC<OrderSuccessProps> = ({
     totalPrice: item.book.price * item.quantity,
     quantity: item.quantity,
   }));
+
+  const handleDownloadPDF = () => {
+    generatePDF(orderDetails, purchaseDate, totalPrice, discount, calculatedDeliveryCharges, finalTotalPrice);
+  };
 
   return (
     <Box style={{ maxWidth: 1200, margin: "auto", padding: "1rem" }}>
@@ -120,6 +125,9 @@ const OrderSuccess: React.FC<OrderSuccessProps> = ({
       </Center>
       <Center>
         <Button onClick={handleBackToShopping}>Back to Shopping</Button>
+        <Button onClick={handleDownloadPDF} style={{ marginLeft: "1rem" }}>
+          Download Receipt
+        </Button>
       </Center>
     </Box>
   );
