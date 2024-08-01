@@ -8,7 +8,9 @@ interface FiltersProps {
 const Filters: React.FC<FiltersProps> = ({ priceRange, setPriceRange }) => {
   return (
     <Box mb="lg">
-      <Text mb="xs">Filter by Price</Text>
+      <Text size="lg"  mb="xs">
+        Filter by Price
+      </Text>
       <RangeSlider
         label="Price Range"
         min={0}

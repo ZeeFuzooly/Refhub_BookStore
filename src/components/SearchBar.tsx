@@ -1,5 +1,4 @@
 import { Select, TextInput, Group, Stack } from "@mantine/core";
-import { useState } from "react";
 
 interface SearchBarProps {
   searchTerm: string;
@@ -24,7 +23,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
         placeholder="Search"
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
-        style={{ flex: 1 }}
+        style={{ width: "100%" }}
       />
       <Group>
         <Select
@@ -32,7 +31,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
           placeholder="Select sorting criteria"
           value={sortBy}
           onChange={(value) => setSortBy(value || "title")}
-          style={{ width: 590 }}
+          style={{ flex: 1 }}
           data={[
             { value: "title", label: "Title" },
             { value: "author", label: "Author" },
@@ -44,7 +43,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
           placeholder="Select category"
           value={categoryFilter || ""}
           onChange={(value) => setCategoryFilter(value || null)}
-          style={{ width: 600 }}
+          style={{ flex: 1 }}
           data={[
             { value: "", label: "All" },
             { value: "Fiction", label: "Fiction" },

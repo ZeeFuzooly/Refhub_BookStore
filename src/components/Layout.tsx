@@ -21,7 +21,7 @@ import { useRouter } from "next/router";
 
 export const metadata = {
   title: "My Book Store",
-  description: "",
+  description: "A great place to find your next read.",
 };
 
 export default function RootLayout({
@@ -66,17 +66,20 @@ export default function RootLayout({
               >
                 <Text size="xl">RefHub Book Store</Text>
                 <Flex align="center">
-                  <Anchor href="/" mr="md">
+                  <Anchor href="/" mr="md" size="lg">
                     Home
                   </Anchor>
-                  <Anchor href="/about" mr="md">
+                  <Anchor href="/about" mr="md" size="lg">
                     About
                   </Anchor>
-                  <Anchor href="/contact">Contact</Anchor>
+                  <Anchor href="/contact" size="lg">
+                    Contact
+                  </Anchor>
                   <Button
                     variant="outline"
                     onClick={handleCartClick}
                     style={{ border: "none", background: "transparent" }}
+                    aria-label="Shopping Cart"
                   >
                     <FaShoppingCart size={24} />
                   </Button>
@@ -90,6 +93,7 @@ export default function RootLayout({
                 flexShrink: 0,
                 padding: "1rem 0",
                 borderTop: "1px solid #eaeaea",
+                backgroundColor: "#f9f9f9",
               }}
             >
               <Container>

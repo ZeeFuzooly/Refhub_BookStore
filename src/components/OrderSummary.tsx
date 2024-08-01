@@ -31,14 +31,14 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({
 
       {orderDetails && orderDetails.length > 0 ? (
         <Table>
-            <Table.Thead>
-              <Table.Tr>
-                <Table.Th>Book Title</Table.Th>
-                <Table.Th>Author</Table.Th>
-                <Table.Th>Unit Price</Table.Th>
-                <Table.Th>Total Price</Table.Th>
-              </Table.Tr>
-            </Table.Thead>
+          <Table.Thead>
+            <Table.Tr>
+              <Table.Th>Book Title</Table.Th>
+              <Table.Th>Author</Table.Th>
+              <Table.Th>Unit Price</Table.Th>
+              <Table.Th>Total Price</Table.Th>
+            </Table.Tr>
+          </Table.Thead>
           <Table.Tbody>
             {orderDetails.map((item, index) => (
               <Table.Tr key={index}>
@@ -65,7 +65,7 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({
       <Text mt="md" size="sm">
         Delivery Charges = +${deliveryCharges.toFixed(2)}
       </Text>
-
+      <hr />
       <Title order={4} style={{ textAlign: "center", marginTop: "1rem" }}>
         Final Total Price = ${finalTotalPrice.toFixed(2)}
       </Title>

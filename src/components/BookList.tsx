@@ -12,9 +12,9 @@ import {
   Paper,
 } from "@mantine/core";
 import SearchBar from "./SearchBar";
-import Filters from "./Filter";
+import Filters from "./Filter"; 
 import BookCard from "./BookCard";
-import { Key, useState } from "react";
+import { useState } from "react";
 
 interface Book {
   title: string;
@@ -29,12 +29,12 @@ interface BookListProps {
 }
 
 const BookList: React.FC<BookListProps> = ({ search }) => {
-  const books = useBookStore((state: { books: any }) => state.books);
-  const addToCart = useCartStore(
-    (state: { addToCart: any }) => state.addToCart
-  );
+  // Retrieve books and addToCart actions from stores
+  const books = useBookStore((state) => state.books);
+  const addToCart = useCartStore((state) => state.addToCart);
   const router = useRouter();
 
+  // State variables for sorting, filtering, and pagination
   const [sortBy, setSortBy] = useState<string>("title");
   const [categoryFilter, setCategoryFilter] = useState<string | null>(null);
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 100]);
@@ -42,53 +42,43 @@ const BookList: React.FC<BookListProps> = ({ search }) => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const itemsPerPage = 8;
 
-  const filteredBooks = books.filter(
-    (book: {
-      title: string;
-      author: string;
-      category: string;
-      price: number;
-    }) => {
-      const matchesSearch = searchTerm.trim()
-        ? book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          book.author.toLowerCase().includes(searchTerm.toLowerCase())
-        : true;
-      const matchesCategory = categoryFilter
-        ? book.category === categoryFilter
-        : true;
-      const matchesPrice =
-        book.price >= priceRange[0] && book.price <= priceRange[1];
-      return matchesSearch && matchesCategory && matchesPrice;
-    }
-  );
+  // Filter books based on search term, category, and price range
+  const filteredBooks = books.filter((book) => {
+    const matchesSearch = searchTerm.trim()
+      ? book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        book.author.toLowerCase().includes(searchTerm.toLowerCase())
+      : true;
+    const matchesCategory = categoryFilter
+      ? book.category === categoryFilter
+      : true;
+    const matchesPrice =
+      book.price >= priceRange[0] && book.price <= priceRange[1];
+    return matchesSearch && matchesCategory && matchesPrice;
+  });
 
-  const sortedBooks = filteredBooks.sort(
-    (
-      a: { title: string; author: string; price: number },
-      b: { title: any; author: any; price: number }
-    ) => {
-      if (sortBy === "title") return a.title.localeCompare(b.title);
-      if (sortBy === "author") return a.author.localeCompare(b.author);
-      if (sortBy === "price") return a.price - b.price;
-      return 0;
+  // Sort books based on selected criteria
+  const sortedBooks = filteredBooks.sort((a, b) => {
+    switch (sortBy) {
+      case "title":
+        return a.title.localeCompare(b.title);
+      case "author":
+        return a.author.localeCompare(b.author);
+      case "price":
+        return a.price - b.price;
+      default:
+        return 0;
     }
-  );
+  });
 
-  // Calculate the books to display for the current page
+  // Calculate paginated books based on current page
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const paginatedBooks = sortedBooks.slice(
-    startIndex,
-    startIndex + itemsPerPage
-  );
+  const paginatedBooks = sortedBooks.slice(startIndex, startIndex + itemsPerPage);
 
-  const handleAddToCart = (book: Book) => {
-    addToCart(book);
-  };
+  // Event handlers
+  const handleAddToCart = (book: Book) => addToCart(book);
+  const handleNext = () => router.push("/cart");
 
-  const handleNext = () => {
-    router.push("/cart"); // Redirect to cart page
-  };
-
+  // Calculate total pages for pagination
   const totalPages = Math.ceil(sortedBooks.length / itemsPerPage);
 
   return (
@@ -114,9 +104,9 @@ const BookList: React.FC<BookListProps> = ({ search }) => {
       {paginatedBooks.length > 0 ? (
         <>
           <Grid>
-            {paginatedBooks.map((book: Book, index: Key | null | undefined) => (
+            {paginatedBooks.map((book) => (
               <Grid.Col
-                key={index}
+                key={book.title + book.author} // Unique key based on book properties
                 span={{ base: 12, sm: 6, md: 4, lg: 3 }}
                 mb="md"
               >

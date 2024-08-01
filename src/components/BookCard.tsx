@@ -1,18 +1,21 @@
 import { Badge, Button, Card, Text, Image, Box } from "@mantine/core";
 
+// Define the interface for a Book object
 interface Book {
   title: string;
   author: string;
   price: number;
   cover: string;
-  category: string;
+  category: string; // This field is not used in the component but might be relevant for future use
 }
 
+// Define the props for the BookCard component
 interface BookCardProps {
   book: Book;
   onAddToCart: () => void;
 }
 
+// Functional component for displaying book information in a card
 const BookCard: React.FC<BookCardProps> = ({ book, onAddToCart }) => {
   return (
     <Card
@@ -27,6 +30,7 @@ const BookCard: React.FC<BookCardProps> = ({ book, onAddToCart }) => {
         justifyContent: "space-between",
       }}
     >
+      {/* Card section for the book cover and badge */}
       <Card.Section style={{ position: "relative" }}>
         <Image src={book.cover} height={160} alt={book.title} />
         <Badge
@@ -37,6 +41,7 @@ const BookCard: React.FC<BookCardProps> = ({ book, onAddToCart }) => {
         </Badge>
       </Card.Section>
 
+      {/* Box for book details and action button */}
       <Box
         style={{
           flex: 1,
