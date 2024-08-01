@@ -1,38 +1,59 @@
-import { useBookStore } from "../stores/bookstore";
-import { useMemo } from "react";
+import { useState, useEffect } from "react";
+import { Book } from "../types/types";
 
-export const useBooks = (searchTerm: string, categoryFilter: string | null, priceRange: [number, number], sortBy: string) => {
-  const books = useBookStore((state) => state.books);
+export const useBooks = (
+  searchTerm: string,
+  categoryFilter: string | null,
+  priceRange: [number, number],
+  sortBy: string
+) => {
+  const [books, setBooks] = useState<Book[]>([]);
 
-  const filteredBooks = useMemo(() => {
-    return books.filter((book) => {
-      const matchesSearch = searchTerm.trim()
-        ? book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          book.author.toLowerCase().includes(searchTerm.toLowerCase())
-        : true;
-      const matchesCategory = categoryFilter
-        ? book.category === categoryFilter
-        : true;
-      const matchesPrice =
-        book.price >= priceRange[0] && book.price <= priceRange[1];
-      return matchesSearch && matchesCategory && matchesPrice;
-    });
-  }, [books, searchTerm, categoryFilter, priceRange]);
+  useEffect(() => {
+    // Fetch books from the API
+    fetch("/api/books")
+      .then((response) => response.json())
+      .then((data) => {
+        let filteredBooks = data as Book[]; // Ensure that data is treated as Book[]
 
-  const sortedBooks = useMemo(() => {
-    return [...filteredBooks].sort((a, b) => {
-      switch (sortBy) {
-        case "title":
-          return a.title.localeCompare(b.title);
-        case "author":
-          return a.author.localeCompare(b.author);
-        case "price":
-          return a.price - b.price;
-        default:
+        // Apply search term filter
+        if (searchTerm) {
+          filteredBooks = filteredBooks.filter(
+            (book: Book) =>
+              book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+              book.author.toLowerCase().includes(searchTerm.toLowerCase())
+          );
+        }
+
+        // Apply category filter
+        if (categoryFilter) {
+          filteredBooks = filteredBooks.filter(
+            (book: Book) => book.category === categoryFilter
+          );
+        }
+
+        // Apply price range filter
+        if (priceRange) {
+          filteredBooks = filteredBooks.filter(
+            (book: Book) =>
+              book.price >= priceRange[0] && book.price <= priceRange[1]
+          );
+        }
+
+        // Apply sorting
+        filteredBooks.sort((a: Book, b: Book) => {
+          if (sortBy === "title") return a.title.localeCompare(b.title);
+          if (sortBy === "author") return a.author.localeCompare(b.author);
+          if (sortBy === "price") return a.price - b.price;
           return 0;
-      }
-    });
-  }, [filteredBooks, sortBy]);
+        });
 
-  return sortedBooks;
+        setBooks(filteredBooks);
+      })
+      .catch((error) => {
+        console.error("Error fetching books:", error);
+      });
+  }, [searchTerm, categoryFilter, priceRange, sortBy]);
+
+  return { books };
 };

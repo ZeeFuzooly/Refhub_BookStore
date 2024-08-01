@@ -1,8 +1,7 @@
 import { Badge, Button, Card, Text, Image, Box } from "@mantine/core";
-import { BookCardProps } from "../types/types"
+import { BookCardProps } from "../types/types";
 
 const BookCard: React.FC<BookCardProps> = ({ book, onAddToCart }) => {
-  console.log("BookCard Data:", book);
   return (
     <Card
       shadow="sm"

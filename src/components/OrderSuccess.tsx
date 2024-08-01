@@ -1,13 +1,13 @@
-import React from 'react';
+import React from "react";
 import { Box, Title, Text, Table, Paper, Center, Button } from "@mantine/core";
 import { useCartStore } from "../stores/cartstore";
 import { useRouter } from "next/router";
-import { OrderSuccessProps, OrderDetail } from '../types/types';
+import { OrderSuccessProps, OrderDetail } from "../types/types";
 
 const OrderSuccess: React.FC<OrderSuccessProps> = ({
   discount = 0,
   deliveryCharges = 0,
-  purchaseDate = new Date(), 
+  purchaseDate = new Date(),
 }) => {
   const clearCart = useCartStore((state) => state.clearCart);
   const items = useCartStore((state) => state.items);
@@ -18,7 +18,8 @@ const OrderSuccess: React.FC<OrderSuccessProps> = ({
   );
 
   // Calculate delivery charges if not provided
-  const calculatedDeliveryCharges = deliveryCharges || Math.floor(Math.random() * (20 - 5 + 1)) + 5;
+  const calculatedDeliveryCharges =
+    deliveryCharges || Math.floor(Math.random() * (20 - 5 + 1)) + 5;
 
   // Calculate final total price after discount and adding delivery charges
   const finalTotalPrice = totalPrice - discount + calculatedDeliveryCharges;
@@ -47,10 +48,11 @@ const OrderSuccess: React.FC<OrderSuccessProps> = ({
         Your order has been placed successfully.
       </Title>
 
-      <Paper shadow="xs" mb="lg" >
+      <Paper shadow="xs" mb="lg">
         <Title order={3}>Receipt</Title>
         <Text size="md" mb="lg">
-          Purchase Date: {purchaseDate.toLocaleDateString()} {purchaseDate.toLocaleTimeString()}
+          Purchase Date: {purchaseDate.toLocaleDateString()}{" "}
+          {purchaseDate.toLocaleTimeString()}
         </Text>
         <Table>
           <Table.Thead>

@@ -1,6 +1,6 @@
-import React from 'react';
+import React from "react";
 import { Select, TextInput, Group, Stack } from "@mantine/core";
-import { SearchBarProps, SortOption, CategoryOption } from '../types/types'; 
+import { SearchBarProps, SortOption, CategoryOption } from "../types/types";
 
 const SearchBar: React.FC<SearchBarProps> = ({
   searchTerm,

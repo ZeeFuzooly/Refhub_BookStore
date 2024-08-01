@@ -21,5 +21,9 @@ export const validateExpirationDate = (date: string) => {
   const [month, year] = date.split("/").map(Number);
   const currentYear = new Date().getFullYear() % 100;
   const currentMonth = new Date().getMonth() + 1;
-  return month >= 1 && month <= 12 && (year > currentYear || (year === currentYear && month >= currentMonth));
+  return (
+    month >= 1 &&
+    month <= 12 &&
+    (year > currentYear || (year === currentYear && month >= currentMonth))
+  );
 };

@@ -4,9 +4,9 @@ import Home from "../../pages/index";
 import "@testing-library/jest-dom";
 
 // Mock the BookList component with a displayName
-jest.mock('../../components/BookList', () => {
+jest.mock("../../components/BookList", () => {
   const MockBookList = () => <div>BookList Component</div>;
-  MockBookList.displayName = 'BookList';
+  MockBookList.displayName = "BookList";
   return MockBookList;
 });
 

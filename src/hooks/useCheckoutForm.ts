@@ -1,8 +1,8 @@
-import { useForm } from '@mantine/form';
-import { z } from 'zod';
-import { zodResolver } from '@mantine/form';
-import { useRouter } from 'next/router';
-import React from 'react';
+import { useForm } from "@mantine/form";
+import { z } from "zod";
+import { zodResolver } from "@mantine/form";
+import { useRouter } from "next/router";
+import React from "react";
 
 // Define the validation schema
 const schema = z.object({
@@ -35,7 +35,9 @@ const useCheckoutForm = () => {
   });
 
   const handleFormSubmit = async (values: any) => {
-    router.push(paymentMethod === "COD" ? "/order-success" : "/credit-card-payment");
+    router.push(
+      paymentMethod === "COD" ? "/order-success" : "/credit-card-payment"
+    );
   };
 
   return { form, paymentMethod, setPaymentMethod, handleFormSubmit };

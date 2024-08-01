@@ -1,12 +1,12 @@
-import { render, screen, fireEvent } from '@testing-library/react';
-import '@testing-library/jest-dom';
-import { MantineProvider } from '@mantine/core';
-import BookCard from '../../components/BookCard'; 
-import { Book } from '../../types/types';
+import { render, screen, fireEvent } from "@testing-library/react";
+import "@testing-library/jest-dom";
+import { MantineProvider } from "@mantine/core";
+import BookCard from "../../components/BookCard";
+import { Book } from "../../types/types";
 
-describe('BookCard', () => {
+describe("BookCard", () => {
   beforeAll(() => {
-    Object.defineProperty(window, 'matchMedia', {
+    Object.defineProperty(window, "matchMedia", {
       writable: true,
       value: jest.fn().mockImplementation((query) => ({
         matches: false,
@@ -21,13 +21,13 @@ describe('BookCard', () => {
     });
   });
 
-  it('should render the book details and handle Add to Cart button click', () => {
+  it("should render the book details and handle Add to Cart button click", () => {
     const mockBook: Book = {
-      cover: 'https://example.com/cover.jpg',
-      title: 'Sample Book',
-      author: 'Author Name',
+      cover: "https://example.com/cover.jpg",
+      title: "Sample Book",
+      author: "Author Name",
       price: 20.99,
-      category: 'Fiction', // Add the required category property
+      category: "Fiction", // Add the required category property
     };
 
     const mockOnAddToCart = jest.fn();
@@ -39,12 +39,12 @@ describe('BookCard', () => {
     );
 
     // Check if book details are rendered correctly
-    expect(screen.getByText('Sample Book')).toBeInTheDocument();
-    expect(screen.getByText('Author Name')).toBeInTheDocument();
-    expect(screen.getByText('Price: $20.99')).toBeInTheDocument();
+    expect(screen.getByText("Sample Book")).toBeInTheDocument();
+    expect(screen.getByText("Author Name")).toBeInTheDocument();
+    expect(screen.getByText("Price: $20.99")).toBeInTheDocument();
 
     // Check if the Add to Cart button is rendered and clickable
-    const button = screen.getByRole('button', { name: /Add to Cart/i });
+    const button = screen.getByRole("button", { name: /Add to Cart/i });
     expect(button).toBeInTheDocument();
 
     fireEvent.click(button);

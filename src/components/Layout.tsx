@@ -65,7 +65,9 @@ export default function RootLayout({
                   padding: "0 1rem",
                 }}
               >
-                <Text size="xl" style={{ fontWeight: 700 }}>RefHub Book Store</Text>
+                <Text size="xl" style={{ fontWeight: 700 }}>
+                  RefHub Book Store
+                </Text>
                 <Flex
                   direction={{ base: "column", sm: "row" }}
                   align="center"
@@ -102,15 +104,11 @@ export default function RootLayout({
               }}
             >
               <Container>
-                <Flex
-                  direction="column"
-                  align="center"
-                  gap="md"
-                >
+                <Flex direction="column" align="center" gap="md">
                   <Text>
                     &copy; 2024 RefHub Book Store - All Rights Reserved.
                   </Text>
-                  <Group >
+                  <Group>
                     <Anchor href="https://facebook.com" target="_blank">
                       <FaFacebook size={24} />
                     </Anchor>

@@ -1,13 +1,6 @@
 import React, { useState } from "react";
 import { useForm } from "@mantine/form";
-import {
-  Box,
-  Title,
-  Button,
-  TextInput,
-  Paper,
-  Stack,
-} from "@mantine/core";
+import { Box, Title, Button, TextInput, Paper, Stack } from "@mantine/core";
 import { useRouter } from "next/router";
 import { z } from "zod";
 import { zodResolver } from "@mantine/form";
@@ -50,14 +43,24 @@ const CreditCardPayment: React.FC = () => {
     },
   });
 
-  const handleCardNumberChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleCardNumberChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const value = event.target.value.replace(/\D/g, "");
-    form.setFieldValue("cardNumber", value.match(/.{1,4}/g)?.join(" ") ?? value);
+    form.setFieldValue(
+      "cardNumber",
+      value.match(/.{1,4}/g)?.join(" ") ?? value
+    );
   };
 
-  const handleExpirationDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleExpirationDateChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const value = event.target.value.replace(/\D/g, "");
-    form.setFieldValue("expirationDate", value.match(/.{1,2}/g)?.join("/") ?? value);
+    form.setFieldValue(
+      "expirationDate",
+      value.match(/.{1,2}/g)?.join("/") ?? value
+    );
   };
 
   const handleFormSubmit = async (values: any) => {
@@ -106,11 +109,15 @@ const CreditCardPayment: React.FC = () => {
               maxLength={4}
             />
           </Stack>
-          <Stack mt="md" gap="xs"  justify="space-between">
+          <Stack mt="md" gap="xs" justify="space-between">
             <Button type="submit" loading={loading}>
               Pay Now
             </Button>
-            <Button type="button" variant="outline" onClick={() => router.push("/checkout")}>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => router.push("/checkout")}
+            >
               Back to Checkout
             </Button>
           </Stack>

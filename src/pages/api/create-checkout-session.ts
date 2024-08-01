@@ -1,8 +1,8 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import Stripe from 'stripe';
+import { NextApiRequest, NextApiResponse } from "next";
+import Stripe from "stripe";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2024-06-20', // Use the correct Stripe API version
+  apiVersion: "2024-06-20", // Use the correct Stripe API version
 });
 
 interface Item {
@@ -11,16 +11,20 @@ interface Item {
   quantity: number;
 }
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method === 'POST') {
-    const { totalPrice, items }: { totalPrice: number; items: Item[] } = req.body;
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
+  if (req.method === "POST") {
+    const { totalPrice, items }: { totalPrice: number; items: Item[] } =
+      req.body;
 
     try {
       const session = await stripe.checkout.sessions.create({
-        payment_method_types: ['card'],
-        line_items: items.map(item => ({
+        payment_method_types: ["card"],
+        line_items: items.map((item) => ({
           price_data: {
-            currency: 'usd',
+            currency: "usd",
             product_data: {
               name: item.bookTitle,
             },
@@ -28,7 +32,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           },
           quantity: item.quantity,
         })),
-        mode: 'payment',
+        mode: "payment",
         success_url: `${process.env.FRONTEND_URL}/stripe`,
         cancel_url: `${process.env.FRONTEND_URL}/cart`,
       });
@@ -38,11 +42,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       if (error instanceof Error) {
         res.status(500).json({ error: error.message });
       } else {
-        res.status(500).json({ error: 'An unknown error occurred' });
+        res.status(500).json({ error: "An unknown error occurred" });
       }
     }
   } else {
-    res.setHeader('Allow', ['POST']);
+    res.setHeader("Allow", ["POST"]);
     res.status(405).end(`Method ${req.method} Not Allowed`);
   }
 }
