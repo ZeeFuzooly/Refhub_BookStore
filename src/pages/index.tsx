@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import BookList from '../components/BookList';
-import SearchBar from '../components/SearchBar';
 
 export default function Home() {
   const [search, setSearch] = useState('');
@@ -11,8 +10,7 @@ export default function Home() {
 
   return (
     <>
-      {/* <SearchBar onSearch={handleSearch} /> */}
-      <br/>
+
       <BookList search={search} />
     </>
   );

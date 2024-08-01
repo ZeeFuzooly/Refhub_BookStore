@@ -1,13 +1,6 @@
+import React from 'react';
 import { Select, TextInput, Group, Stack } from "@mantine/core";
-
-interface SearchBarProps {
-  searchTerm: string;
-  setSearchTerm: (term: string) => void;
-  categoryFilter: string | null;
-  setCategoryFilter: (category: string | null) => void;
-  sortBy: string;
-  setSortBy: (sortBy: string) => void;
-}
+import { SearchBarProps, SortOption, CategoryOption } from '../types/types'; 
 
 const SearchBar: React.FC<SearchBarProps> = ({
   searchTerm,
@@ -17,6 +10,20 @@ const SearchBar: React.FC<SearchBarProps> = ({
   categoryFilter,
   setCategoryFilter,
 }) => {
+  // Define sort and category options with types
+  const sortOptions: SortOption[] = [
+    { value: "title", label: "Title" },
+    { value: "author", label: "Author" },
+    { value: "price", label: "Price" },
+  ];
+
+  const categoryOptions: CategoryOption[] = [
+    { value: "", label: "All" },
+    { value: "Fiction", label: "Fiction" },
+    { value: "Non-Fiction", label: "Non-Fiction" },
+    { value: "Academic", label: "Academic" },
+  ];
+
   return (
     <Stack>
       <TextInput
@@ -32,11 +39,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
           value={sortBy}
           onChange={(value) => setSortBy(value || "title")}
           style={{ flex: 1 }}
-          data={[
-            { value: "title", label: "Title" },
-            { value: "author", label: "Author" },
-            { value: "price", label: "Price" },
-          ]}
+          data={sortOptions}
         />
         <Select
           label="Category"
@@ -44,12 +47,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
           value={categoryFilter || ""}
           onChange={(value) => setCategoryFilter(value || null)}
           style={{ flex: 1 }}
-          data={[
-            { value: "", label: "All" },
-            { value: "Fiction", label: "Fiction" },
-            { value: "Non-Fiction", label: "Non-Fiction" },
-            { value: "Academic", label: "Academic" },
-          ]}
+          data={categoryOptions}
         />
       </Group>
     </Stack>

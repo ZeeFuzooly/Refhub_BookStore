@@ -53,6 +53,7 @@ export default function RootLayout({
           >
             <Box style={{ flex: "1 0 auto" }}>
               <Flex
+                direction={{ base: "column", sm: "row" }}
                 align="center"
                 justify="space-between"
                 style={{
@@ -64,15 +65,19 @@ export default function RootLayout({
                   padding: "0 1rem",
                 }}
               >
-                <Text size="xl">RefHub Book Store</Text>
-                <Flex align="center">
-                  <Anchor href="/" mr="md" size="lg">
+                <Text size="xl" style={{ fontWeight: 700 }}>RefHub Book Store</Text>
+                <Flex
+                  direction={{ base: "column", sm: "row" }}
+                  align="center"
+                  gap="md"
+                >
+                  <Anchor href="/" size="lg" style={{ marginBottom: 5 }}>
                     Home
                   </Anchor>
-                  <Anchor href="/about" mr="md" size="lg">
+                  <Anchor href="/about" size="lg" style={{ marginBottom: 5 }}>
                     About
                   </Anchor>
-                  <Anchor href="/contact" size="lg">
+                  <Anchor href="/contact" size="lg" style={{ marginBottom: 5 }}>
                     Contact
                   </Anchor>
                   <Button
@@ -97,11 +102,15 @@ export default function RootLayout({
               }}
             >
               <Container>
-                <Flex direction="column" align="center">
+                <Flex
+                  direction="column"
+                  align="center"
+                  gap="md"
+                >
                   <Text>
                     &copy; 2024 RefHub Book Store - All Rights Reserved.
                   </Text>
-                  <Group style={{ marginTop: "1rem" }}>
+                  <Group >
                     <Anchor href="https://facebook.com" target="_blank">
                       <FaFacebook size={24} />
                     </Anchor>

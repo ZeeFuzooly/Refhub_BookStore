@@ -1,24 +1,12 @@
 import { useCartStore } from '../stores/cartstore';
 import { Table, Button, NumberInput, Text, Flex, Space, Title, Box, Center, Card } from '@mantine/core';
 import { useRouter } from 'next/router';
-import { Key } from 'react';
-
-interface Book {
-  title: string;
-  author: string;
-  price: number;
-  cover: string;
-}
-
-interface CartItem {
-  book: Book;
-  quantity: number;
-}
+import { Book, CartItem } from '../types/types'; 
 
 const Cart = () => {
-  const items = useCartStore((state: { items: CartItem[]; }) => state.items as CartItem[]);
-  const updateQuantity = useCartStore((state: { updateQuantity: (book: Book, quantity: number) => void; }) => state.updateQuantity);
-  const removeFromCart = useCartStore((state: { removeFromCart: (book: Book) => void; }) => state.removeFromCart);
+  const items = useCartStore((state) => state.items as CartItem[]);
+  const updateQuantity = useCartStore((state) => state.updateQuantity);
+  const removeFromCart = useCartStore((state) => state.removeFromCart);
   const router = useRouter();
 
   const handleQuantityChange = (book: Book, value: number | string | null) => {
@@ -55,13 +43,11 @@ const Cart = () => {
   };
 
   const handleContinueShopping = () => {
-    router.push('/'); // Replace with the path to your products or shop page
+    router.push('/'); 
   };
 
   // Calculate total price
-  const totalPrice = items.reduce((total: number, item: CartItem) => {
-    return total + item.book.price * item.quantity;
-  }, 0);
+  const totalPrice = items.reduce((total, item) => total + item.book.price * item.quantity, 0);
 
   return (
     <Center>
@@ -76,19 +62,19 @@ const Cart = () => {
           <>
             <Title order={2} mt="md" mb="md">Your Shopping Cart</Title>
             <Table striped highlightOnHover>
-              <thead>
-                <tr>
+              <Table.Thead>
+                <Table.Tr>
                   <Table.Th>Title</Table.Th>
                   <Table.Th>Author</Table.Th>
                   <Table.Th>Quantity</Table.Th>
                   <Table.Th>Unit Price</Table.Th>
                   <Table.Th>Total</Table.Th>
                   <Table.Th>Actions</Table.Th>
-                </tr>
-              </thead>
-              <tbody>
-                {items.map((item: CartItem, index: Key | null | undefined) => (
-                  <tr key={index}>
+                </Table.Tr>
+              </Table.Thead>
+              <Table.Tbody>
+                {items.map((item, index) => (
+                  <Table.Tr key={index}>
                     <Table.Td>{item.book.title}</Table.Td>
                     <Table.Td>{item.book.author}</Table.Td>
                     <Table.Td>
@@ -111,11 +97,18 @@ const Cart = () => {
                         Remove
                       </Button>
                     </Table.Td>
-                  </tr>
+                  </Table.Tr>
                 ))}
-              </tbody>
+              </Table.Tbody>
             </Table>
-            <Flex justify="space-between" align="center" mt="lg">
+            <Space h="xl" />
+            <Flex
+              direction={{ base: 'column', sm: 'row' }}
+              justify="space-between"
+              align="center"
+              mt="lg"
+              gap="md"
+            >
               <Button variant="outline" onClick={handleBack}>Back to Home</Button>
               <Text size="lg">Total: ${totalPrice.toFixed(2)}</Text>
               <Button onClick={handleCheckout}>Proceed to Checkout</Button>

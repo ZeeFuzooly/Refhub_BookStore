@@ -1,85 +1,40 @@
-import { useBookStore } from "../stores/bookstore";
-import { useCartStore } from "../stores/cartstore";
+import React from 'react';
 import { useRouter } from "next/router";
 import {
   Container,
   Grid,
   Center,
-  Button,
   Text,
   Pagination,
   Group,
   Paper,
 } from "@mantine/core";
 import SearchBar from "./SearchBar";
-import Filters from "./Filter"; 
+import Filters from "./Filter";
 import BookCard from "./BookCard";
-import { useState } from "react";
-
-interface Book {
-  title: string;
-  author: string;
-  price: number;
-  cover: string;
-  category: string;
-}
-
-interface BookListProps {
-  search: string;
-}
+import BookTable from "./BookTable";
+import { useBooks } from "../hooks/useBooks";
+import { usePagination } from "../hooks/usePagination";
+import { useSearchFilter } from "../hooks/useSearchFilter";
+import { useCartStore } from "../stores/cartstore";
+import { Book, BookListProps } from "../types/types";
+import ViewToggle from './ViewToggle'; // Make sure to import ViewToggle
 
 const BookList: React.FC<BookListProps> = ({ search }) => {
-  // Retrieve books and addToCart actions from stores
-  const books = useBookStore((state) => state.books);
-  const addToCart = useCartStore((state) => state.addToCart);
   const router = useRouter();
-
-  // State variables for sorting, filtering, and pagination
-  const [sortBy, setSortBy] = useState<string>("title");
-  const [categoryFilter, setCategoryFilter] = useState<string | null>(null);
-  const [priceRange, setPriceRange] = useState<[number, number]>([0, 100]);
-  const [searchTerm, setSearchTerm] = useState(search);
-  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [view, setView] = React.useState<string>("card");
   const itemsPerPage = 8;
 
-  // Filter books based on search term, category, and price range
-  const filteredBooks = books.filter((book) => {
-    const matchesSearch = searchTerm.trim()
-      ? book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        book.author.toLowerCase().includes(searchTerm.toLowerCase())
-      : true;
-    const matchesCategory = categoryFilter
-      ? book.category === categoryFilter
-      : true;
-    const matchesPrice =
-      book.price >= priceRange[0] && book.price <= priceRange[1];
-    return matchesSearch && matchesCategory && matchesPrice;
-  });
+  // Use custom hooks
+  const { searchTerm, setSearchTerm, categoryFilter, setCategoryFilter, priceRange, setPriceRange, sortBy, setSortBy } = useSearchFilter();
+  const books = useBooks(searchTerm, categoryFilter, priceRange, sortBy);
+  const { paginatedItems: paginatedBooks, totalPages, currentPage, setCurrentPage } = usePagination(books, itemsPerPage);
 
-  // Sort books based on selected criteria
-  const sortedBooks = filteredBooks.sort((a, b) => {
-    switch (sortBy) {
-      case "title":
-        return a.title.localeCompare(b.title);
-      case "author":
-        return a.author.localeCompare(b.author);
-      case "price":
-        return a.price - b.price;
-      default:
-        return 0;
-    }
-  });
+  // Use cart store
+  const addToCart = useCartStore((state) => state.addToCart);
 
-  // Calculate paginated books based on current page
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const paginatedBooks = sortedBooks.slice(startIndex, startIndex + itemsPerPage);
-
-  // Event handlers
   const handleAddToCart = (book: Book) => addToCart(book);
   const handleNext = () => router.push("/cart");
-
-  // Calculate total pages for pagination
-  const totalPages = Math.ceil(sortedBooks.length / itemsPerPage);
 
   return (
     <Container fluid px="xs">
@@ -101,39 +56,47 @@ const BookList: React.FC<BookListProps> = ({ search }) => {
         </Grid>
       </Paper>
 
-      {paginatedBooks.length > 0 ? (
-        <>
-          <Grid>
-            {paginatedBooks.map((book) => (
-              <Grid.Col
-                key={book.title + book.author} // Unique key based on book properties
-                span={{ base: 12, sm: 6, md: 4, lg: 3 }}
-                mb="md"
-              >
-                <BookCard
-                  book={book}
-                  onAddToCart={() => handleAddToCart(book)}
+      <ViewToggle view={view} setView={setView} />
+
+      {view === "card" ? (
+        paginatedBooks.length > 0 ? (
+          <>
+            <Grid>
+              {paginatedBooks.map((book) => (
+                <Grid.Col
+                  key={book.title + book.author}
+                  span={{ base: 12, sm: 6, md: 4, lg: 3 }}
+                  mb="md"
+                >
+                  <BookCard
+                    book={book}
+                    onAddToCart={() => handleAddToCart(book)}
+                  />
+                </Grid.Col>
+              ))}
+            </Grid>
+            <Center mt="xl">
+              <Group>
+                <Pagination
+                  value={currentPage}
+                  onChange={setCurrentPage}
+                  total={totalPages}
                 />
-              </Grid.Col>
-            ))}
-          </Grid>
-          <Center mt="xl">
-            <Group>
-              <Pagination
-                value={currentPage}
-                onChange={setCurrentPage}
-                total={totalPages}
-                withControls
-              />
-            </Group>
+              </Group>
+            </Center>
+          </>
+        ) : (
+          <Center mt="xl" style={{ minHeight: "50vh" }}>
+            <Text size="lg" color="dimmed">
+              No books found
+            </Text>
           </Center>
-        </>
+        )
       ) : (
-        <Center mt="xl" style={{ minHeight: "50vh" }}>
-          <Text size="lg" color="dimmed">
-            No books found
-          </Text>
-        </Center>
+        <BookTable
+          books={paginatedBooks}
+          onAddToCart={handleAddToCart}
+        />
       )}
     </Container>
   );
