@@ -1,5 +1,5 @@
-import React from 'react';
-import { useRouter } from "next/router";
+import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 import {
   Container,
   Grid,
@@ -8,37 +8,70 @@ import {
   Pagination,
   Group,
   Paper,
-} from "@mantine/core";
-import SearchBar from "./SearchBar";
-import Filters from "./Filter";
-import BookCard from "./BookCard";
-import BookTable from "./BookTable";
-import { useBooks } from "../hooks/useBooks";
-import { usePagination } from "../hooks/usePagination";
-import { useSearchFilter } from "../hooks/useSearchFilter";
-import { useCartStore } from "../stores/cartstore";
-import { Book, BookListProps } from "../types/types";
-import ViewToggle from './ViewToggle'; // Make sure to import ViewToggle
+} from '@mantine/core';
+import SearchBar from './SearchBar';
+import Filters from './Filter';
+import BookCard from './BookCard';
+import BookTable from './BookTable';
+import { usePagination } from '../hooks/usePagination';
+import { useSearchFilter } from '../hooks/useSearchFilter';
+import { useCartStore } from '../stores/cartstore';
+import { Book, BookListProps } from '../types/types';
+import ViewToggle from './ViewToggle';
 
 const BookList: React.FC<BookListProps> = ({ search }) => {
   const router = useRouter();
-  const [view, setView] = React.useState<string>("card");
+  const [view, setView] = React.useState<string>('card');
+  const [books, setBooks] = React.useState<Book[]>([]);
+  const [loading, setLoading] = React.useState<boolean>(true);
   const itemsPerPage = 8;
 
   // Use custom hooks
-  const { searchTerm, setSearchTerm, categoryFilter, setCategoryFilter, priceRange, setPriceRange, sortBy, setSortBy } = useSearchFilter();
-  const books = useBooks(searchTerm, categoryFilter, priceRange, sortBy);
+  const {
+    searchTerm,
+    setSearchTerm,
+    categoryFilter,
+    setCategoryFilter,
+    priceRange,
+    setPriceRange,
+    sortBy,
+    setSortBy,
+  } = useSearchFilter();
   const { paginatedItems: paginatedBooks, totalPages, currentPage, setCurrentPage } = usePagination(books, itemsPerPage);
 
   // Use cart store
   const addToCart = useCartStore((state) => state.addToCart);
 
+  // Fetch books from API
+  const fetchBooks = async () => {
+    try {
+      const response = await fetch('/api/books');
+      if (!response.ok) {
+        throw new Error('Failed to fetch books');
+      }
+      const data = await response.json();
+      setBooks(data);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchBooks();
+  }, []);
+
   const handleAddToCart = (book: Book) => addToCart(book);
-  const handleNext = () => router.push("/cart");
+  const handleNext = () => router.push('/cart');
+
+  if (loading) {
+    return <Center style={{ minHeight: '50vh' }}><Text size="lg">Loading...</Text></Center>;
+  }
 
   return (
     <Container fluid px="xs">
-      <Paper shadow="xs" style={{ marginBottom: "1rem" }}>
+      <Paper shadow="xs" style={{ marginBottom: '1rem' }}>
         <Grid>
           <Grid.Col span={12}>
             <SearchBar
@@ -58,7 +91,7 @@ const BookList: React.FC<BookListProps> = ({ search }) => {
 
       <ViewToggle view={view} setView={setView} />
 
-      {view === "card" ? (
+      {view === 'card' ? (
         paginatedBooks.length > 0 ? (
           <>
             <Grid>
@@ -86,17 +119,14 @@ const BookList: React.FC<BookListProps> = ({ search }) => {
             </Center>
           </>
         ) : (
-          <Center mt="xl" style={{ minHeight: "50vh" }}>
+          <Center mt="xl" style={{ minHeight: '50vh' }}>
             <Text size="lg" color="dimmed">
               No books found
             </Text>
           </Center>
         )
       ) : (
-        <BookTable
-          books={paginatedBooks}
-          onAddToCart={handleAddToCart}
-        />
+        <BookTable books={paginatedBooks} onAddToCart={handleAddToCart} />
       )}
     </Container>
   );
