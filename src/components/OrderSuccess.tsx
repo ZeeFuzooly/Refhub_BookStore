@@ -1,4 +1,3 @@
-// src/components/OrderSuccess.tsx
 import React from 'react';
 import { Box, Title, Text, Table, Paper, Center, Button } from "@mantine/core";
 import { useCartStore } from "../stores/cartstore";
